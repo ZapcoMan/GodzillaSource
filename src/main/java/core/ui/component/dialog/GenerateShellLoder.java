@@ -83,7 +83,7 @@ public class GenerateShellLoder extends JDialog {
 
         automaticBindClick.bindJButtonClick(this, this);
         functions.fireActionEventByJComboBox(this.payloadComboBox);
-        functions.setWindowSize(this, 530, 250);
+        functions.setWindowSize(this, 570, 290);
         this.setLocationRelativeTo(MainActivity.getFrame());
         this.setDefaultCloseOperation(2);
         this.setVisible(true);
