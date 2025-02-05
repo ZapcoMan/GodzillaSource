@@ -2,7 +2,7 @@
 > 向哥斯拉作者表示respect:[https://github.com/BeichenDream/Godzilla](https://github.com/BeichenDream/Godzilla)
 
 # 说明
-1. 源码版本为v3.03-godzilla
+1. 源码版本为 最新版
 2. 本项目由于是根据作者项目逆向得到的源码，可能还存在一些问题，在学习研究中会及时更改错误。
 3. 项目源码基本为原始状态未做其他修改。
 4. 项目采用maven重新构建。
