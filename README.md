@@ -1,4 +1,4 @@
-# 哥斯拉源码
+# 哥斯拉 源码二次开发
 > 向哥斯拉作者表示respect:[https://github.com/BeichenDream/Godzilla](https://github.com/BeichenDream/Godzilla)
 
 # 说明
